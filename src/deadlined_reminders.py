@@ -18,18 +18,6 @@ class DeadlinedReminder(Iterable, ABC):
     def is_due(self):
         pass
 
-
-class DateReminder(DeadlinedReminder):
-    def __init__(self, text, date):
-        self.text = text
-        self.date = parse(date, dayfirst=True)
-
-    def __iter__(self):
-        return iter ([self.text, self.date.isoformat()])
-
-    def is_due(self):
-        return self.date < datetime.now()
-
     @classmethod
     def __subclasshook__(cls, subclass):
         if cls is not DeadlinedReminder:
@@ -42,3 +30,16 @@ class DateReminder(DeadlinedReminder):
             return NotImplemented
 
         return True
+
+
+class DateReminder(DeadlinedReminder):
+    def __init__(self, text, date):
+        self.text = text
+        self.date = parse(date, dayfirst=True)
+
+    def __iter__(self):
+        return iter([self.text, self.date.isoformat()])
+
+    def is_due(self):
+        return self.date < datetime.now()
+
